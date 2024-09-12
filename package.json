@@ -1,0 +1,29 @@
+{
+  "name": "react-factory-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node bin/react-factory-cli.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.5.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^10.2.2"
+  },
+  "bin": {
+    "rf": "./bin/react-factory-cli.ts"
+  }
+}
