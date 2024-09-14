@@ -1,29 +1,39 @@
 import * as path from "path";
-import * as fs from "fs-extra";
 import { createDirectoryIfNotExists, writeFile } from "../../utils/fileHelpers";
 import {
   functionalComponent,
   classComponent,
-  higherOrderFunctionalComponent,
-  routingComponent,
 } from "../../templates/component.template";
+import getConfig from "../../utils/rfcConfig";
+import { toPascalCase } from "../../utils/stringCases";
 
 // Load configuration
-const configPath = path.join(process.cwd(), "rfc-config.json");
-let config: any = {};
-if (fs.existsSync(configPath)) {
-  config = fs.readJsonSync(configPath);
-} else {
-  console.log("No configuration file found. Using default settings.");
-}
+const config = getConfig();
 
 export function generateComponent(name: string, options: any) {
-  const componentDir = path.join(
+  const componentName = toPascalCase(name);
+  let componentDir = path.join(
     process.cwd(),
-    config.componentLocation || "src/components",
-    name
+    config?.componentLocation || "src/components"
   );
+  let styleDir = path.join(
+    process.cwd(),
+    config?.styleLocation || "src/styles"
+  );
+  if (config?.folderStructure == "advance") {
+    componentDir = path.join(
+      process.cwd(),
+      config?.componentLocation || "src/components",
+      componentName
+    );
+    styleDir = path.join(
+      process.cwd(),
+      config?.componentLocation || "src/components",
+      componentName
+    );
+  }
   createDirectoryIfNotExists(componentDir);
+  createDirectoryIfNotExists(styleDir);
 
   let componentTemplate = "";
 
@@ -31,28 +41,18 @@ export function generateComponent(name: string, options: any) {
   const hasFunctional = options["functional"];
   const hasClass = options["class"];
   const hasRouting = options["routing"];
-  const hasHigherOrder = options["higher-order-functional"];
 
-  if (hasHigherOrder) {
-    if (hasFunctional || hasClass || hasRouting) {
-      console.error("Cannot use -hof with -f, -c, or -r options.");
-      return;
-    }
-    componentTemplate = higherOrderFunctionalComponent(name);
-  } else if (hasClass) {
-    if (hasRouting) {
-      componentTemplate = `${classComponent(
-        name
-      )}\n// Routing can be added manually\n`;
-    } else {
-      componentTemplate = classComponent(name);
-    }
-  } else if (hasRouting) {
-    componentTemplate = routingComponent(name);
+  if (hasClass) {
+    componentTemplate = classComponent(componentName, config);
   } else {
-    componentTemplate = functionalComponent(name);
+    componentTemplate = functionalComponent(componentName, config);
   }
 
   // Write the component file
-  writeFile(path.join(componentDir, `${name}.tsx`), componentTemplate);
+  
+  writeFile(path.join(componentDir, `${componentName}.tsx`), componentTemplate);
+  writeFile(
+    path.join(styleDir, `${componentName}.${config?.styleType || "css"}`),
+    "/* component style file */"
+  );
 }

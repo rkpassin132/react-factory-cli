@@ -2,11 +2,17 @@
   "name": "react-factory-cli",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node bin/react-factory-cli.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup": "npm run build && npm link"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rkpassin132/react-factory-cli"
+  },
+  "bin": {
+    "rfc": "./dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +28,5 @@
     "commander": "^12.1.0",
     "fs-extra": "^11.2.0",
     "inquirer": "^10.2.2"
-  },
-  "bin": {
-    "rf": "./bin/react-factory-cli.ts"
   }
 }

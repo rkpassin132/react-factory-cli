@@ -5,12 +5,15 @@ import * as path from 'path';
 export function createDirectoryIfNotExists(dirPath: string): void {
   if (!fs.existsSync(dirPath)) {
     fs.ensureDirSync(dirPath);
-    console.log(`Directory created: ${dirPath}`);
   }
 }
 
 // Write content to a file
 export function writeFile(filePath: string, content: string): void {
+  if(fileExists(filePath)){
+    console.error(`File already exist: ${filePath}`);
+    return;
+  }
   fs.writeFileSync(filePath, content, 'utf8');
   console.log(`File written: ${filePath}`);
 }

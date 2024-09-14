@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { initProject } from '../src/commands/init';
-import { generateComponent } from '../src/commands/generate/component';
-import { generateService } from '../src/commands/generate/service';
+import { initProject } from './commands/init';
+import { generateComponent } from './commands/generate/component';
 
 const program = new Command();
 
@@ -30,11 +29,5 @@ program
   .option('-r, --routing', 'Generate a component with routing', false)
   .action((name, options) => generateComponent(name, options));
 
-// Generate a new service
-program
-  .command('generate service <name>')
-  .alias('g s')
-  .description('Generate a new service file')
-  .action((name) => generateService(name));
 
 program.parse(process.argv);

@@ -1,4 +1,7 @@
 {
-  "componentLocation": "src/components",
-  "serviceLocation": "src/services"
+  "folderStructure": "basic",
+  "componentLocation": "src2/components",
+  "styleLocation": "src2/style",
+  "styleType": "css",
+  "serviceLocation": "src2/services"
 }
