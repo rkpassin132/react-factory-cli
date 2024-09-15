@@ -2,7 +2,8 @@ import path from "path";
 import fs from "fs-extra";
 
 export interface Config {
-    folderStructure: "basic" | "advance";
+  rootLocation: string;
+  folderStructure: "basic" | "advance";
   componentLocation?: string;
   styleLocation?: string;
   styleType?: string;
