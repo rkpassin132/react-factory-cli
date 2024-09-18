@@ -1,7 +1,7 @@
 {
   "name": "react-factory-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "CLI for creating and managing React projects and components",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -14,9 +14,17 @@
   "bin": {
     "rfc": "./dist/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "react",
+    "cli",
+    "react-cli",
+    "react-components",
+    "react-setup",
+    "react-factory-cli",
+    "react-commands"
+  ],
+  "author": "Rahul kumar",
+  "license": "MIT",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.5.4",

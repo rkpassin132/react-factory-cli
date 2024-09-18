@@ -30,11 +30,6 @@ program
   .description("Generate a new React component")
   .option("-f, --functional", "Generate a functional component", false)
   .option("-c, --class", "Generate a class-based component", false)
-  .option(
-    "-hof, --higher-order-functional",
-    "Generate a higher-order functional component",
-    false
-  )
   .option("-r, --routing", "Generate a component with routing", false)
   .action((name, options) => generateComponent(name, options));
 
