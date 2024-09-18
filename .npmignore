@@ -1,4 +1,6 @@
-node_modules
+node_modules/
+dist/
+test/
 .env
 src2
 rfc-config.json
