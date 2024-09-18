@@ -12,16 +12,16 @@ program
   .version("1.0.0");
 
 // Initialize a new project
-program
-  .command("setup")
-  .description("Setup a new React project")
-  .option("--basic", "Setup a basic React project")
-  .option("--advanced", "Setup an advanced React project")
-  .option("--material", "Use Material UI for styling")
-  .option("--bootstrap", "Use Bootstrap for styling")
-  .option("--none", "Do not use any CSS framework")
-  .option('--path <name>', 'Specify the folder to create the project in', 'my-react-app') // Default folder name if not specified
-  .action((options) => setupReact(options));
+// program
+//   .command("setup")
+//   .description("Setup a new React project")
+//   .option("--basic", "Setup a basic React project")
+//   .option("--advanced", "Setup an advanced React project")
+//   .option("--material", "Use Material UI for styling")
+//   .option("--bootstrap", "Use Bootstrap for styling")
+//   .option("--none", "Do not use any CSS framework")
+//   .option('--path <name>', 'Specify the folder to create the project in', 'my-react-app') // Default folder name if not specified
+//   .action((options) => setupReact(options));
 
 // Generate a new component
 program
