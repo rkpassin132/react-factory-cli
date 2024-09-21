@@ -26,17 +26,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateService = generateService;
+exports.generateContext = generateContext;
 var path = __importStar(require("path"));
 var rfcConfig_1 = __importDefault(require("../../utils/rfcConfig"));
 var stringCases_1 = require("../../utils/stringCases");
 var fileHelpers_1 = require("../../utils/fileHelpers");
+var context_template_1 = require("../../templates/context.template");
 // Load configuration
 var config = (0, rfcConfig_1.default)();
-function generateService(name) {
+function generateContext(name) {
     var _a;
-    var serviceName = (0, stringCases_1.toPascalCase)(name);
-    var serviceDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.service) === null || _a === void 0 ? void 0 : _a.path) || "src/services");
-    (0, fileHelpers_1.createDirectoryIfNotExists)(serviceDir);
-    (0, fileHelpers_1.writeFile)(path.join(serviceDir, "".concat(serviceName, ".ts")), "/* ".concat(serviceName, " service file */"));
+    var contextName = (0, stringCases_1.toPascalCase)(name);
+    var contextDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.context) === null || _a === void 0 ? void 0 : _a.path) || "src/context");
+    (0, fileHelpers_1.createDirectoryIfNotExists)(contextDir);
+    (0, fileHelpers_1.writeFile)(path.join(contextDir, "".concat(contextName, "Context.tsx")), (0, context_template_1.contextTemplate)(contextName));
 }

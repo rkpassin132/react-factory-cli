@@ -1,18 +1,21 @@
 import { Config } from "../utils/rfcConfig";
 
-function getStyle(name: string, config: Config | null): string {
-  let importStyle = `import '${config?.styleLocation || '.'}/${name}.css'; // Import the CSS file`;
-  if(config?.folderStructure == "advance"){
-    importStyle = `import './${name}.css'; // Import the CSS file`;
-  }
+function getStyle(name: string): string {
+  let importStyle = `import './${name}.scss'; // Import the style file`;
   return importStyle;
 }
 
+export function styleTemplate(name: string) {
+  return `.${name}-container{
+
+  }`;
+}
+
 // Functional Component Template
-export function functionalComponent(name: string, config: Config | null): string {
+export function functionalComponentTemplate(name: string, name2: string): string {
   return `
 import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
-${getStyle(name, config)}
+${getStyle(name)}
 
 const ${name}: React.FC = () => {
   const divRef = useRef(null);
@@ -31,7 +34,7 @@ const ${name}: React.FC = () => {
   });
 
   return (
-    <div>${name} Component</div>
+    <div className="${name2}-container">${name} Component</div>
   );
 };
 
@@ -40,10 +43,10 @@ export default ${name};
 }
 
 // Class Component Template
-export function classComponent(name: string, config: Config | null): string {
+export function classComponentTemplate(name: string, name2: string): string {
   return `
 import React, { Component } from 'react';
-${getStyle(name, config)}
+${getStyle(name)}
 
 class ${name} extends Component {
   constructor(props) {
@@ -72,7 +75,7 @@ class ${name} extends Component {
 
   render() {
     return (
-      <div>${name} Component</div>
+      <div className="${name2}-container">${name} Component</div>
     );
   }
 }

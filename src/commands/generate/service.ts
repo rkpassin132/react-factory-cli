@@ -1,15 +1,19 @@
-import * as fs from 'fs-extra';
 import * as path from 'path';
-import { log } from '../../utils/logger';
+import getConfig from '../../utils/rfcConfig';
+import { toPascalCase } from '../../utils/stringCases';
+import { createDirectoryIfNotExists, writeFile } from '../../utils/fileHelpers';
+
+// Load configuration
+const config = getConfig();
 
 export function generateService(name: string) {
-  log(`Generating a new service: ${name}`);
+  const serviceName = toPascalCase(name);
+  let serviceDir = path.join(
+    process.cwd(),
+    config?.service?.path || "src/services",
+  );
+  createDirectoryIfNotExists(serviceDir);
 
-  const serviceDir = path.join(process.cwd(), 'src', 'services');
-  fs.ensureDirSync(serviceDir);
+  writeFile(path.join(serviceDir, `${serviceName}.ts`), `/* ${serviceName} service file */`);
 
-  const template = `export class ${name} {\n  // Service logic here\n}\n`;
-
-  fs.writeFileSync(path.join(serviceDir, `${name}.ts`), template);
-  log('Service generated successfully!');
 }

@@ -2,12 +2,26 @@ import path from "path";
 import fs from "fs-extra";
 
 export interface Config {
-  rootLocation: string;
-  folderStructure: "basic" | "advance";
-  componentLocation?: string;
-  styleLocation?: string;
-  styleType?: string;
-  serviceLocation?: number;
+  component: {
+    path: string;
+    type: string;
+  };
+  page: {
+    path: string;
+    type: string;
+  };
+  service: {
+    path: string;
+  };
+  route: {
+    path: string;
+  };
+  context: {
+    path: string;
+  };
+  hook: {
+    path: string;
+  };
 }
 
 const getConfig = (): Config | null => {

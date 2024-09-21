@@ -1,8 +1,9 @@
 import * as path from "path";
 import { createDirectoryIfNotExists, writeFile } from "../../utils/fileHelpers";
 import {
-  functionalComponent,
-  classComponent,
+  functionalComponentTemplate,
+  classComponentTemplate,
+  styleTemplate,
 } from "../../templates/component.template";
 import getConfig from "../../utils/rfcConfig";
 import { toPascalCase } from "../../utils/stringCases";
@@ -10,49 +11,47 @@ import { toPascalCase } from "../../utils/stringCases";
 // Load configuration
 const config = getConfig();
 
-export function generateComponent(name: string, options: any) {
+export function generateComponent(
+  name: string,
+  options: any,
+  componentType = "component"
+) {
   const componentName = toPascalCase(name);
-  let componentDir = path.join(
-    process.cwd(),
-    config?.componentLocation || "src/components"
-  );
-  let styleDir = path.join(
-    process.cwd(),
-    config?.styleLocation || "src/styles"
-  );
-  if (config?.folderStructure == "advance") {
-    componentDir = path.join(
-      process.cwd(),
-      config?.componentLocation || "src/components",
-      componentName
-    );
-    styleDir = path.join(
-      process.cwd(),
-      config?.componentLocation || "src/components",
-      componentName
-    );
+  let componentPath = "";
+  if (options["path"]) {
+    componentPath = options["path"];
+  } else {
+    componentPath =
+      componentType == "page"
+        ? config?.page?.path || "src/pages"
+        : config?.component?.path || "src/components";
   }
+  let componentDir = path.join(process.cwd(), componentPath, componentName);
   createDirectoryIfNotExists(componentDir);
-  createDirectoryIfNotExists(styleDir);
 
   let componentTemplate = "";
 
   // Validation for mutually exclusive options
   const hasFunctional = options["functional"];
   const hasClass = options["class"];
-  const hasRouting = options["routing"];
 
   if (hasClass) {
-    componentTemplate = classComponent(componentName, config);
+    componentTemplate = classComponentTemplate(componentName, name);
+  } else if (hasFunctional) {
+    componentTemplate = functionalComponentTemplate(componentName, name);
   } else {
-    componentTemplate = functionalComponent(componentName, config);
+    if (config?.component.type == "class") {
+      componentTemplate = classComponentTemplate(componentName, name);
+    } else {
+      componentTemplate = functionalComponentTemplate(componentName, name);
+    }
   }
 
   // Write the component file
-  
+
   writeFile(path.join(componentDir, `${componentName}.tsx`), componentTemplate);
   writeFile(
-    path.join(styleDir, `${componentName}.${config?.styleType || "css"}`),
-    "/* component style file */"
+    path.join(componentDir, `${componentName}.scss`),
+    styleTemplate(name)
   );
 }

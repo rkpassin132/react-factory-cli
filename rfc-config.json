@@ -1,8 +1,22 @@
 {
-  "rootLocation": "",
-  "folderStructure": "basic",
-  "componentLocation": "src2/components",
-  "styleLocation": "src2/style",
-  "styleType": "css",
-  "serviceLocation": "src2/services"
+  "component": {
+    "path": "src2/components",
+    "type": "functional"
+  },
+  "page": {
+    "path": "src2/components",
+    "type": "functional"
+  },
+  "service": {
+    "path": "src2/services"
+  },
+  "route": {
+    "path": "/src2/routes"
+  },
+  "context": {
+    "path": "src2/context"
+  },
+  "hook": {
+    "path": "src2/hooks"
+  }
 }

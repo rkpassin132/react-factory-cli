@@ -26,17 +26,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateService = generateService;
+exports.generateHook = generateHook;
 var path = __importStar(require("path"));
 var rfcConfig_1 = __importDefault(require("../../utils/rfcConfig"));
-var stringCases_1 = require("../../utils/stringCases");
 var fileHelpers_1 = require("../../utils/fileHelpers");
+var hook_template_1 = require("../../templates/hook.template");
+var stringCases_1 = require("../../utils/stringCases");
 // Load configuration
 var config = (0, rfcConfig_1.default)();
-function generateService(name) {
+function generateHook(name) {
     var _a;
-    var serviceName = (0, stringCases_1.toPascalCase)(name);
-    var serviceDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.service) === null || _a === void 0 ? void 0 : _a.path) || "src/services");
-    (0, fileHelpers_1.createDirectoryIfNotExists)(serviceDir);
-    (0, fileHelpers_1.writeFile)(path.join(serviceDir, "".concat(serviceName, ".ts")), "/* ".concat(serviceName, " service file */"));
+    var contextDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.hook) === null || _a === void 0 ? void 0 : _a.path) || "src/hooks");
+    (0, fileHelpers_1.createDirectoryIfNotExists)(contextDir);
+    var pascalName = (0, stringCases_1.toPascalCase)(name);
+    (0, fileHelpers_1.writeFile)(path.join(contextDir, "".concat(name, ".ts")), (0, hook_template_1.hookTemplate)(pascalName, name));
 }

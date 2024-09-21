@@ -34,28 +34,41 @@ var rfcConfig_1 = __importDefault(require("../../utils/rfcConfig"));
 var stringCases_1 = require("../../utils/stringCases");
 // Load configuration
 var config = (0, rfcConfig_1.default)();
-function generateComponent(name, options) {
+function generateComponent(name, options, componentType) {
+    var _a, _b;
+    if (componentType === void 0) { componentType = "component"; }
     var componentName = (0, stringCases_1.toPascalCase)(name);
-    var componentDir = path.join(process.cwd(), (config === null || config === void 0 ? void 0 : config.componentLocation) || "src/components");
-    var styleDir = path.join(process.cwd(), (config === null || config === void 0 ? void 0 : config.styleLocation) || "src/styles");
-    if ((config === null || config === void 0 ? void 0 : config.folderStructure) == "advance") {
-        componentDir = path.join(process.cwd(), (config === null || config === void 0 ? void 0 : config.componentLocation) || "src/components", componentName);
-        styleDir = path.join(process.cwd(), (config === null || config === void 0 ? void 0 : config.componentLocation) || "src/components", componentName);
+    var componentPath = "";
+    if (options["path"]) {
+        componentPath = options["path"];
     }
+    else {
+        componentPath =
+            componentType == "page"
+                ? ((_a = config === null || config === void 0 ? void 0 : config.page) === null || _a === void 0 ? void 0 : _a.path) || "src/pages"
+                : ((_b = config === null || config === void 0 ? void 0 : config.component) === null || _b === void 0 ? void 0 : _b.path) || "src/components";
+    }
+    var componentDir = path.join(process.cwd(), componentPath, componentName);
     (0, fileHelpers_1.createDirectoryIfNotExists)(componentDir);
-    (0, fileHelpers_1.createDirectoryIfNotExists)(styleDir);
     var componentTemplate = "";
     // Validation for mutually exclusive options
     var hasFunctional = options["functional"];
     var hasClass = options["class"];
-    var hasRouting = options["routing"];
     if (hasClass) {
-        componentTemplate = (0, component_template_1.classComponent)(componentName, config);
+        componentTemplate = (0, component_template_1.classComponentTemplate)(componentName, name);
+    }
+    else if (hasFunctional) {
+        componentTemplate = (0, component_template_1.functionalComponentTemplate)(componentName, name);
     }
     else {
-        componentTemplate = (0, component_template_1.functionalComponent)(componentName, config);
+        if ((config === null || config === void 0 ? void 0 : config.component.type) == "class") {
+            componentTemplate = (0, component_template_1.classComponentTemplate)(componentName, name);
+        }
+        else {
+            componentTemplate = (0, component_template_1.functionalComponentTemplate)(componentName, name);
+        }
     }
     // Write the component file
     (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(componentName, ".tsx")), componentTemplate);
-    (0, fileHelpers_1.writeFile)(path.join(styleDir, "".concat(componentName, ".").concat((config === null || config === void 0 ? void 0 : config.styleType) || "css")), "/* component style file */");
+    (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(componentName, ".scss")), (0, component_template_1.styleTemplate)(name));
 }
