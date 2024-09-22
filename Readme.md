@@ -2,7 +2,7 @@
 
 Imagine you're about to start a new React project, and instead of spending time configuring everything from scratch, you run a single command, and your project is set up, fully equipped with Tailwind CSS for utility-first styling and SCSS for custom CSS. That’s exactly what **React Factory CLI** offers.
 
-**React Factory CLI** is a versatile command-line tool that simplifies the process of scaffolding and managing React projects. It allows developers to quickly generate functional, class-based, pages, services, context APIs, and hooks with minimal effort. A standout feature of React Factory CLI is the `rfc-config.json` file, which lets you customize your project’s folder structure and default component types. 
+**React Factory CLI** is a versatile command-line tool that simplifies the process of scaffolding and managing React projects. It allows developers to quickly generate functional, class-based, pages, services, context APIs, and hooks with minimal effort. A standout feature of React Factory CLI is the `rfc-config.json` file, which lets you customize your project’s folder structure and default component types.
 
 One of its key features is providing a complete React boilerplate setup, including Tailwind CSS for rapid UI design and SCSS for custom styling, all through a simple setup command. The tool's ease of use, combined with its expanding feature set, makes it an indispensable resource for any React developer looking to streamline their workflow and maintain clean, well-structured code.
 
@@ -51,6 +51,7 @@ react-factory-cli <operation> <name> [options...]
 ```
 
 ### RFC Config
+
 ```json
 {
   "component": {
@@ -75,23 +76,23 @@ react-factory-cli <operation> <name> [options...]
 
 ### Available Commands
 
-| Command              | Alias  | Description                          |
-| -------------------- | ------ | ------------------------------------ |
-| `setup`              | N/A    | Setup a new React project            |
-| `generate:component` | `gc`   | Generates a new React component      |
-| `generate:page`      | `gp`   | Generates a new React page component |
-| `generate:service`   | `gs`   | Generates a new React service        |
-| `generate:context`   | `gctx` | Generates a new React Context API    |
-| `generate:hook`      | `gh`   | Generates a new React hook           |
+| Command              | Alias  | Description                                          |
+| -------------------- | ------ | ---------------------------------------------------- |
+| `setup`              | N/A    | Setup a new React project with tailwind css and scss |
+| `generate:component` | `gc`   | Generates a new React component                      |
+| `generate:page`      | `gp`   | Generates a new React page component                 |
+| `generate:service`   | `gs`   | Generates a new React service                        |
+| `generate:context`   | `gctx` | Generates a new React Context API                    |
+| `generate:hook`      | `gh`   | Generates a new React hook                           |
 
 ### Command Options
 
-| Command                    | Option                  | Description                                                           |
-| -------------------------- | ----------------------- | --------------------------------------------------------------------- |
-| `setup`                    | `--path <name>`         | Specify the folder to create the project in (default: `my-react-app`) |
-| `generate:component`, `gc` | `-f, --functional`      | Generate a functional component                                       |
-| `generate:component`, `gc` | `-c, --class`           | Generate a class-based component                                      |
-| `generate:component`, `gc` | `-p, --path <location>` | Generate a component in a different location                          |
+| Command                    | Option                  | Description                                                             |
+| -------------------------- | ----------------------- | ----------------------------------------------------------------------- |
+| `setup`                    | `--path <name>`         | Specify the folder to create the project in (default: `current folder`) |
+| `generate:component`, `gc` | `-f, --functional`      | Generate a functional component                                         |
+| `generate:component`, `gc` | `-c, --class`           | Generate a class-based component                                        |
+| `generate:component`, `gc` | `-p, --path <location>` | Generate a component in a different location                            |
 
 ### Examples
 
