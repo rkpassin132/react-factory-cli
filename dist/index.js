@@ -23,7 +23,6 @@ program
     .description("Generate a new React component")
     .option("-f, --functional", "Generate a functional component", false)
     .option("-c, --class", "Generate a class-based component", false)
-    .option("-r, --routing", "Generate a component with routing", false)
     .option("-p, --path", "Generate a component with on diffrent location", false)
     .action(function (name, options) { return (0, component_1.generateComponent)(name, options); });
 program

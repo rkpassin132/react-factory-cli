@@ -40,5 +40,5 @@ function generateService(name) {
     if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
         serviceDir += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(serviceDir);
-    (0, fileHelpers_1.writeFile)(path.join(serviceDir, "".concat(fileName, ".ts")), "/* ".concat(fileName, " service file */"));
+    (0, fileHelpers_1.writeFile)(path.join(serviceDir, "".concat(fileName, "Service.ts")), "/* ".concat(fileName, " service file */"));
 }
