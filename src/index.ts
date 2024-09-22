@@ -14,21 +14,15 @@ program
   .description("CLI for creating and managing React projects and components")
   .version("1.0.0");
 
-// Initialize a new project
-// program
-//   .command("setup")
-//   .description("Setup a new React project")
-//   .option("--basic", "Setup a basic React project")
-//   .option("--advanced", "Setup an advanced React project")
-//   .option("--material", "Use Material UI for styling")
-//   .option("--bootstrap", "Use Bootstrap for styling")
-//   .option("--none", "Do not use any CSS framework")
-//   .option('--path <name>', 'Specify the folder to create the project in', 'my-react-app') // Default folder name if not specified
-//   .action((options) => setupReact(options));
+program
+  .command("setup")
+  .description("Setup a new React project")
+  .option('--path <name>', 'Specify the folder to create the project in', 'my-react-app') // Default folder name if not specified
+  .action((options) => setupReact(options));
 
 program
   .command("generate:component <name>")
-  .alias("g c")
+  .alias("gc")
   .description("Generate a new React component")
   .option("-f, --functional", "Generate a functional component", false)
   .option("-c, --class", "Generate a class-based component", false)
@@ -38,7 +32,7 @@ program
 
   program
   .command("generate:page <name>")
-  .alias("g p")
+  .alias("gp")
   .description("Generate a new React page component")
   .option("-f, --functional", "Generate a functional component", false)
   .option("-c, --class", "Generate a class-based component", false)
@@ -47,19 +41,19 @@ program
 
 program
   .command("generate:service <name>")
-  .alias("g s")
+  .alias("gs")
   .description("Generate a new React service")
   .action((name, options) => generateService(name));
 
 program
   .command("generate:context <name>")
-  .alias("g ctx")
+  .alias("gctx")
   .description("Generate a new React context api")
   .action((name, options) => generateContext(name));
 
 program
   .command("generate:hook <name>")
-  .alias("g h")
+  .alias("gh")
   .description("Generate a new React hook")
   .action((name, options) => generateHook(name));
 

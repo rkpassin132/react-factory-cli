@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -64,54 +41,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupReact = setupReact;
 var path_1 = __importDefault(require("path"));
-var logger = __importStar(require("../../utils/logger"));
-var commands_1 = require("../../utils/commands");
+var gitHelper_1 = require("../../utils/gitHelper");
+var fileHelpers_1 = require("../../utils/fileHelpers");
 function setupReact(options) {
     return __awaiter(this, void 0, void 0, function () {
-        var destinationPath, repo, templateType, cssFramework, folderMap, folderKey, folder, fullPath;
+        var targetDir;
         return __generator(this, function (_a) {
-            try {
-                destinationPath = path_1.default.join(process.cwd(), options.path);
-                repo = "https://github.com/rkpassin132/react-factory-setup.git";
-                templateType = options.advanced ? "advanced" : "basic";
-                cssFramework = options.material
-                    ? "-material"
-                    : options.bootstrap
-                        ? "-bootstrap"
-                        : "";
-                folderMap = {
-                    basic: "src-basic",
-                    "basic-material": "src-basic-material",
-                    "basic-bootstrap": "src-basic-bootstrap",
-                    advanced: "src-advanced",
-                    "advance-material": "src-advance-material",
-                    "advance-bootstrap": "src-advance-bootstrap",
-                };
-                folderKey = "".concat(templateType).concat(cssFramework);
-                folder = folderMap[folderKey];
-                if (!folder) {
-                    console.error("Invalid template type specified!");
-                    return [2 /*return*/];
-                }
-                fullPath = path_1.default.resolve(process.cwd(), destinationPath);
-                logger.info("Creating application...");
-                // Clone the repo without checkout
-                (0, commands_1.runCommand)("git clone --no-checkout ".concat(repo, " ").concat(fullPath));
-                // Initialize sparse checkout
-                (0, commands_1.runCommand)("git sparse-checkout init", fullPath);
-                // Set the specific folder to be checked out
-                (0, commands_1.runCommand)("git sparse-checkout set ".concat(folder), fullPath);
-                // Checkout the files
-                (0, commands_1.runCommand)("git checkout", fullPath);
-                logger.info("Application created");
-                // logger.info("Installing packages...");
-                // runCommand(`cd ${destinationPath} && pnpm install`);
-                // logger.info("Packages installed");
-            }
-            catch (error) {
-                console.log(error);
-                logger.error("Faile to setup repo");
-            }
+            targetDir = path_1.default.join(__dirname, options['path'] ? options['path'] : '');
+            (0, fileHelpers_1.createDirectoryIfNotExists)(targetDir);
+            (0, gitHelper_1.gitClone)('master', targetDir);
             return [2 /*return*/];
         });
     });
