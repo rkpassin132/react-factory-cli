@@ -47,9 +47,9 @@ function setupReact(options) {
     return __awaiter(this, void 0, void 0, function () {
         var targetDir;
         return __generator(this, function (_a) {
-            targetDir = path_1.default.join(__dirname, options['path'] ? options['path'] : '');
+            targetDir = path_1.default.join(process.cwd(), options['path'] ? options['path'] : '');
             (0, fileHelpers_1.createDirectoryIfNotExists)(targetDir);
-            (0, gitHelper_1.gitClone)('master', targetDir);
+            (0, gitHelper_1.gitClone)('main', targetDir);
             return [2 /*return*/];
         });
     });

@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 import * as logger from './logger';
 const repoUrl = 'https://github.com/rkpassin132/react-factory-setup.git';
-const tempDir = path.join(__dirname, 'temp-setup'); // Temporary directory
+const tempDir = path.join(process.cwd(), 'temp-setup'); // Temporary directory
 
 export const gitClone = (branch: string, targetDir: string) => {
     try {

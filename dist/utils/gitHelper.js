@@ -29,7 +29,7 @@ var fs = require('fs');
 var path = require('path');
 var logger = __importStar(require("./logger"));
 var repoUrl = 'https://github.com/rkpassin132/react-factory-setup.git';
-var tempDir = path.join(__dirname, 'temp-setup'); // Temporary directory
+var tempDir = path.join(process.cwd(), 'temp-setup'); // Temporary directory
 var gitClone = function (branch, targetDir) {
     try {
         // Clone the develop branch to a temporary directory
