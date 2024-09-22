@@ -1,4 +1,4 @@
-import { Config } from "../utils/rfcConfig";
+import { toCamelCase } from "../utils/stringCases";
 
 function getStyle(name: string): string {
   let importStyle = `import './${name}.scss'; // Import the style file`;
@@ -6,13 +6,15 @@ function getStyle(name: string): string {
 }
 
 export function styleTemplate(name: string) {
+  name = toCamelCase(name);
   return `.${name}-container{
 
-  }`;
+}`;
 }
 
 // Functional Component Template
-export function functionalComponentTemplate(name: string, name2: string): string {
+export function functionalComponentTemplate(name: string): string {
+  let name2 = toCamelCase(name);
   return `
 import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 ${getStyle(name)}
@@ -43,7 +45,8 @@ export default ${name};
 }
 
 // Class Component Template
-export function classComponentTemplate(name: string, name2: string): string {
+export function classComponentTemplate(name: string): string {
+  let name2 = toCamelCase(name);
   return `
 import React, { Component } from 'react';
 ${getStyle(name)}

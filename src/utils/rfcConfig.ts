@@ -1,4 +1,5 @@
 import path from "path";
+import logger from "./logger"
 import fs from "fs-extra";
 
 export interface Config {
@@ -31,11 +32,11 @@ const getConfig = (): Config | null => {
     try {
       return fs.readJsonSync(configPath) as Config;
     } catch (error) {
-      console.error("Error reading configuration file:", error);
+      logger.error("Error reading configuration file");
       return null; // Return null if there is an error reading the config file
     }
   } else {
-    console.log("No configuration file found. Using default settings.");
+    logger.log("No configuration file found. Using default settings.");
     return null;
   }
 };

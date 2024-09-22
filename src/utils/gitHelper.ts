@@ -1,36 +1,31 @@
+import * as fs from 'fs';
+import path from "path";
+import logger from './logger';
 import { runCommand } from "./commands";
 
-const fs = require('fs');
-const path = require('path');
-import * as logger from './logger';
+
 const repoUrl = 'https://github.com/rkpassin132/react-factory-setup.git';
 const tempDir = path.join(process.cwd(), 'temp-setup'); // Temporary directory
 
-export const gitClone = (branch: string, targetDir: string) => {
+export const gitClone = async (branch: string, targetDir: string) => {
     try {
         // Clone the develop branch to a temporary directory
-        runCommand(`git clone --branch ${branch} ${repoUrl} ${tempDir}`);
-    
+        await runCommand(`git clone --branch ${branch} ${repoUrl} ${tempDir}`);
+        logger.info('Cloning completed');
+
         // Move files to the target directory
-        fs.readdir(tempDir, (err:any, files:any) => {
-            if (err) throw err;
-    
-            files.forEach((file:any) => {
-                const src = path.join(tempDir, file);
-                const dest = path.join(targetDir, file);
-    
-                fs.renameSync(src, dest);
-            });
-    
-            // Remove the temporary directory
-            fs.rmdirSync(tempDir, { recursive: true });
-            logger.log('Clone completed without .git folder!');
-        });
+        const files = await fs.readdirSync(tempDir);
+        for (const file of files) {
+            const src = path.join(tempDir, file);
+            const dest = path.join(targetDir, file);
+            await fs.renameSync(src, dest);
+        }
+        fs.rmSync(tempDir, { recursive: true, force: true });
         logger.info("Application created");
 
-        logger.info("Installing packages using pnpm...");
-        runCommand(`npm install`);
-        logger.info("Ready to use");
+        logger.info("Installing packages using `npm install`");
+        await runCommand(`npm install`);
+        logger.success("Ready to use");
     } catch (err) {
         console.error('Error:', err);
         logger.error("Fail to setup repo");

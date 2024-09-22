@@ -1,15 +1,31 @@
-export function log(message: string) {
-  console.log(message);
+import chalk from "chalk";
+
+function log(message: string) {
+  console.log(chalk.white(message));
 }
 
-export function info(message: string) {
-  console.info(message);
+function info(message: string) {
+  console.info(chalk.blue(message));
 }
 
-export function warn(message: string) {
-  console.info(message);
+function warn(message: string) {
+  console.warn(chalk.yellow(message));
 }
 
-export function error(message: string) {
-  console.error(message);
+function error(message: string) {
+  console.error(chalk.red(message));
 }
+
+function success(message: string) {
+  console.log(chalk.green(message));
+}
+
+const logger = {
+  log,
+  info,
+  warn,
+  error,
+  success,
+};
+
+export default logger;

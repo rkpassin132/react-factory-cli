@@ -37,7 +37,7 @@ var config = (0, rfcConfig_1.default)();
 function generateComponent(name, options, componentType) {
     var _a, _b;
     if (componentType === void 0) { componentType = "component"; }
-    var componentName = (0, stringCases_1.toPascalCase)(name);
+    var _c = (0, stringCases_1.fileNameAndPath)(name), fileName = _c.fileName, pathDir = _c.pathDir;
     var componentPath = "";
     if (options["path"]) {
         componentPath = options["path"];
@@ -48,27 +48,29 @@ function generateComponent(name, options, componentType) {
                 ? ((_a = config === null || config === void 0 ? void 0 : config.page) === null || _a === void 0 ? void 0 : _a.path) || "src/pages"
                 : ((_b = config === null || config === void 0 ? void 0 : config.component) === null || _b === void 0 ? void 0 : _b.path) || "src/components";
     }
-    var componentDir = path.join(process.cwd(), componentPath, componentName);
+    var componentDir = path.join(process.cwd(), componentPath, fileName);
+    if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
+        componentDir += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(componentDir);
     var componentTemplate = "";
     // Validation for mutually exclusive options
     var hasFunctional = options["functional"];
     var hasClass = options["class"];
     if (hasClass) {
-        componentTemplate = (0, component_template_1.classComponentTemplate)(componentName, name);
+        componentTemplate = (0, component_template_1.classComponentTemplate)(fileName);
     }
     else if (hasFunctional) {
-        componentTemplate = (0, component_template_1.functionalComponentTemplate)(componentName, name);
+        componentTemplate = (0, component_template_1.functionalComponentTemplate)(fileName);
     }
     else {
         if ((config === null || config === void 0 ? void 0 : config.component.type) == "class") {
-            componentTemplate = (0, component_template_1.classComponentTemplate)(componentName, name);
+            componentTemplate = (0, component_template_1.classComponentTemplate)(fileName);
         }
         else {
-            componentTemplate = (0, component_template_1.functionalComponentTemplate)(componentName, name);
+            componentTemplate = (0, component_template_1.functionalComponentTemplate)(fileName);
         }
     }
     // Write the component file
-    (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(componentName, ".tsx")), componentTemplate);
-    (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(componentName, ".scss")), (0, component_template_1.styleTemplate)(name));
+    (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".tsx")), componentTemplate);
+    (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".scss")), (0, component_template_1.styleTemplate)(fileName));
 }

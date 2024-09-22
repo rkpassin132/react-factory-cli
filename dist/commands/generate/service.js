@@ -35,8 +35,10 @@ var fileHelpers_1 = require("../../utils/fileHelpers");
 var config = (0, rfcConfig_1.default)();
 function generateService(name) {
     var _a;
-    var serviceName = (0, stringCases_1.toPascalCase)(name);
+    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
     var serviceDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.service) === null || _a === void 0 ? void 0 : _a.path) || "src/services");
+    if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
+        serviceDir += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(serviceDir);
-    (0, fileHelpers_1.writeFile)(path.join(serviceDir, "".concat(serviceName, ".ts")), "/* ".concat(serviceName, " service file */"));
+    (0, fileHelpers_1.writeFile)(path.join(serviceDir, "".concat(fileName, ".ts")), "/* ".concat(fileName, " service file */"));
 }

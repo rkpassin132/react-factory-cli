@@ -6,7 +6,7 @@ import {
   styleTemplate,
 } from "../../templates/component.template";
 import getConfig from "../../utils/rfcConfig";
-import { toPascalCase } from "../../utils/stringCases";
+import { fileNameAndPath } from "../../utils/stringCases";
 
 // Load configuration
 const config = getConfig();
@@ -16,7 +16,7 @@ export function generateComponent(
   options: any,
   componentType = "component"
 ) {
-  const componentName = toPascalCase(name);
+  const { fileName, pathDir } = fileNameAndPath(name);
   let componentPath = "";
   if (options["path"]) {
     componentPath = options["path"];
@@ -26,7 +26,8 @@ export function generateComponent(
         ? config?.page?.path || "src/pages"
         : config?.component?.path || "src/components";
   }
-  let componentDir = path.join(process.cwd(), componentPath, componentName);
+  let componentDir = path.join(process.cwd(), componentPath, fileName);
+  if(pathDir?.length) componentDir += '/' + pathDir;
   createDirectoryIfNotExists(componentDir);
 
   let componentTemplate = "";
@@ -36,22 +37,22 @@ export function generateComponent(
   const hasClass = options["class"];
 
   if (hasClass) {
-    componentTemplate = classComponentTemplate(componentName, name);
+    componentTemplate = classComponentTemplate(fileName);
   } else if (hasFunctional) {
-    componentTemplate = functionalComponentTemplate(componentName, name);
+    componentTemplate = functionalComponentTemplate(fileName);
   } else {
     if (config?.component.type == "class") {
-      componentTemplate = classComponentTemplate(componentName, name);
+      componentTemplate = classComponentTemplate(fileName);
     } else {
-      componentTemplate = functionalComponentTemplate(componentName, name);
+      componentTemplate = functionalComponentTemplate(fileName);
     }
   }
 
   // Write the component file
 
-  writeFile(path.join(componentDir, `${componentName}.tsx`), componentTemplate);
+  writeFile(path.join(componentDir, `${fileName}.tsx`), componentTemplate);
   writeFile(
-    path.join(componentDir, `${componentName}.scss`),
-    styleTemplate(name)
+    path.join(componentDir, `${fileName}.scss`),
+    styleTemplate(fileName)
   );
 }

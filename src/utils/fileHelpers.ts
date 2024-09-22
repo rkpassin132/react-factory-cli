@@ -1,21 +1,22 @@
 import * as fs from 'fs-extra';
-import * as path from 'path';
+import logger from './logger';
 
 // Create a directory if it does not exist
 export function createDirectoryIfNotExists(dirPath: string): void {
   if (!fs.existsSync(dirPath)) {
     fs.ensureDirSync(dirPath);
   }
+  logger.info(`Directory Created: ${dirPath}`);
 }
 
 // Write content to a file
 export function writeFile(filePath: string, content: string): void {
   if(fileExists(filePath)){
-    console.error(`File already exist: ${filePath}`);
+    logger.error(`File already exist: ${filePath}`);
     return;
   }
   fs.writeFileSync(filePath, content, 'utf8');
-  console.log(`File written: ${filePath}`);
+  logger.log(`File written: ${filePath}`);
 }
 
 // Read content from a file

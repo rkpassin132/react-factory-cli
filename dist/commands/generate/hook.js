@@ -36,8 +36,10 @@ var stringCases_1 = require("../../utils/stringCases");
 var config = (0, rfcConfig_1.default)();
 function generateHook(name) {
     var _a;
+    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
     var contextDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.hook) === null || _a === void 0 ? void 0 : _a.path) || "src/hooks");
+    if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
+        contextDir += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(contextDir);
-    var pascalName = (0, stringCases_1.toPascalCase)(name);
-    (0, fileHelpers_1.writeFile)(path.join(contextDir, "".concat(name, ".ts")), (0, hook_template_1.hookTemplate)(pascalName, name));
+    (0, fileHelpers_1.writeFile)(path.join(contextDir, "use".concat(fileName, ".ts")), (0, hook_template_1.hookTemplate)(fileName));
 }

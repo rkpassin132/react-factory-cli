@@ -22,26 +22,31 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDirectoryIfNotExists = createDirectoryIfNotExists;
 exports.writeFile = writeFile;
 exports.readFile = readFile;
 exports.fileExists = fileExists;
 var fs = __importStar(require("fs-extra"));
+var logger_1 = __importDefault(require("./logger"));
 // Create a directory if it does not exist
 function createDirectoryIfNotExists(dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.ensureDirSync(dirPath);
     }
+    logger_1.default.info("Directory Created: ".concat(dirPath));
 }
 // Write content to a file
 function writeFile(filePath, content) {
     if (fileExists(filePath)) {
-        console.error("File already exist: ".concat(filePath));
+        logger_1.default.error("File already exist: ".concat(filePath));
         return;
     }
     fs.writeFileSync(filePath, content, 'utf8');
-    console.log("File written: ".concat(filePath));
+    logger_1.default.log("File written: ".concat(filePath));
 }
 // Read content from a file
 function readFile(filePath) {

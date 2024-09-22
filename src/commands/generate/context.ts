@@ -1,6 +1,6 @@
 import * as path from 'path';
 import getConfig from '../../utils/rfcConfig';
-import { toPascalCase } from '../../utils/stringCases';
+import { fileNameAndPath } from '../../utils/stringCases';
 import { createDirectoryIfNotExists, writeFile } from '../../utils/fileHelpers';
 import { contextTemplate } from '../../templates/context.template';
 
@@ -8,13 +8,14 @@ import { contextTemplate } from '../../templates/context.template';
 const config = getConfig();
 
 export function generateContext(name: string) {
-  const contextName = toPascalCase(name);
+  const { fileName, pathDir } = fileNameAndPath(name);
   let contextDir = path.join(
     process.cwd(),
     config?.context?.path || "src/context",
   );
+  if(pathDir?.length) contextDir += '/' + pathDir;
   createDirectoryIfNotExists(contextDir);
 
-  writeFile(path.join(contextDir, `${contextName}Context.tsx`), contextTemplate(contextName));
+  writeFile(path.join(contextDir, `${fileName}Context.tsx`), contextTemplate(fileName));
 
 }

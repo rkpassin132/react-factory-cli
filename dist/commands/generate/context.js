@@ -36,8 +36,10 @@ var context_template_1 = require("../../templates/context.template");
 var config = (0, rfcConfig_1.default)();
 function generateContext(name) {
     var _a;
-    var contextName = (0, stringCases_1.toPascalCase)(name);
+    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
     var contextDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.context) === null || _a === void 0 ? void 0 : _a.path) || "src/context");
+    if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
+        contextDir += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(contextDir);
-    (0, fileHelpers_1.writeFile)(path.join(contextDir, "".concat(contextName, "Context.tsx")), (0, context_template_1.contextTemplate)(contextName));
+    (0, fileHelpers_1.writeFile)(path.join(contextDir, "".concat(fileName, "Context.tsx")), (0, context_template_1.contextTemplate)(fileName));
 }

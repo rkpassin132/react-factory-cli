@@ -1,5 +1,7 @@
+import { toCamelCase } from "../utils/stringCases";
 
-export function hookTemplate(name: string, name2: string): string {
+export function hookTemplate(name: string): string {
+  let name2 = toCamelCase(name);
     return `
 import { useState, useEffect } from 'react';
 
