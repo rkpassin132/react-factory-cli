@@ -4,7 +4,13 @@ Imagine you're about to start a new React project, and instead of spending time 
 
 **React Factory CLI** is a versatile command-line tool that simplifies the process of scaffolding and managing React projects. It allows developers to quickly generate functional, class-based, pages, services, context APIs, and hooks with minimal effort. A standout feature of React Factory CLI is the `rfc-config.json` file, which lets you customize your project’s folder structure and default component types.
 
-One of its key features is providing a complete React boilerplate setup, including Tailwind CSS for rapid UI design and SCSS for custom styling, all through a simple setup command. The tool's ease of use, combined with its expanding feature set, makes it an indispensable resource for any React developer looking to streamline their workflow and maintain clean, well-structured code.
+**React Factory CLI** offers a complete React boilerplate setup via a simple setup command, including:
+- Tailwind CSS for fast UI design and SCSS for custom styling.
+- Routing with middlewareWrapper for enhanced route handling.
+- Built-in hooks like debounce and title.
+- Theme Context API for global theme management.
+- Pre-built services like token management and HTTP service with token integration.
+- Environment configuration for local, staging, and production.
 
 React Factory CLI is evolving, and with every release, it's becoming more than just a helper; it’s a tool that shapes the way developers build modern React applications.
 
