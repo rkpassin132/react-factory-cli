@@ -1,5 +1,6 @@
 node_modules/
 test/
 .env
+src
 src2
 rfc-config.json

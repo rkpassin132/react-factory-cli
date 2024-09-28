@@ -17,7 +17,7 @@ program
 program
   .command("setup")
   .description("Setup a new React project")
-  .option('--path <name>', 'Specify the folder to create the project in', 'my-react-app') // Default folder name if not specified
+  .option('--path <name>', 'Specify the folder to create the project in', '') // Default folder name if not specified
   .action((options) => setupReact(options));
 
 program
