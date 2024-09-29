@@ -20,7 +20,9 @@ export const gitClone = async (branch: string, targetDir: string) => {
             const dest = path.join(targetDir, file);
             await fs.renameSync(src, dest);
         }
-        fs.rmSync(tempDir, { recursive: true, force: true });
+        setTimeout(() => {
+            fs.rmSync(tempDir, { recursive: true, force: true });
+        }, 100);
         logger.info("Application created");
 
         logger.info("Installing packages using `npm install`");
