@@ -21,15 +21,15 @@ export const gitClone = async (branch: string, targetDir: string) => {
             const dest = path.join(targetDir, file);
             await fs.renameSync(src, dest);
         }
-        await fs.rmSync(tempDir, { recursive: true, force: true });
-        logger.info("Application created");
-
-        logger.info("Installing packages using `npm install`");
+        fs.rmSync(tempDir, { recursive: true, force: true });
+        
         setTimeout(async () => {
-            await runCommand(`cd ${tempDir}`);
+            logger.info("Application created");
+            logger.info("Installing packages using `npm install`");
+            await runCommand(`cd ${targetDir}`);
             await runCommand(`npm install`);
             logger.success("Ready to use");
-        }, 400);
+        }, 600);
     } catch (err) {
         console.error('Error:', err);
         logger.error("Fail to setup repo");
