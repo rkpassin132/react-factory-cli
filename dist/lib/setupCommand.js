@@ -41,8 +41,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupReact = setupReact;
 var path_1 = __importDefault(require("path"));
-var gitHelper_1 = require("../../utils/gitHelper");
-var fileHelpers_1 = require("../../utils/fileHelpers");
+var gitHelper_1 = require("../helper/gitHelper");
+var fileHelpers_1 = require("../helper/fileHelpers");
 function setupReact(options) {
     return __awaiter(this, void 0, void 0, function () {
         var targetDir;

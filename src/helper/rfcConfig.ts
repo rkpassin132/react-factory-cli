@@ -6,10 +6,13 @@ export interface Config {
   component: {
     path: string;
     type: string;
+    withTest: boolean;
   };
   page: {
     path: string;
     type: string;
+    withTest: boolean;
+    withSeoTag: boolean;
   };
   service: {
     path: string;
@@ -23,6 +26,12 @@ export interface Config {
   hook: {
     path: string;
   };
+  interface: {
+    path: string;
+  }
+  test: {
+    path: string;
+  }
 }
 
 const getConfig = (): Config | null => {

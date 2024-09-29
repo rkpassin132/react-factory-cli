@@ -1,6 +1,6 @@
 import path from "path";
-import { gitClone } from "../../utils/gitHelper";
-import { createDirectoryIfNotExists } from "../../utils/fileHelpers";
+import { gitClone } from "../helper/gitHelper";
+import { createDirectoryIfNotExists } from "../helper/fileHelpers";
 
 
 export async function setupReact(options: any) {

@@ -1,11 +1,14 @@
 {
   "component": {
     "path": "src2/components",
-    "type": "functional"
+    "type": "functional",
+    "withTest": true
   },
   "page": {
-    "path": "src2/components",
-    "type": "functional"
+    "path": "src2/pages",
+    "type": "functional",
+    "withSeoTag": true,
+    "withTest": true
   },
   "service": {
     "path": "src2/services"
@@ -18,5 +21,11 @@
   },
   "hook": {
     "path": "src2/hooks"
+  },
+  "interface": {
+    "path": "src2/utils/interfaces"
+  },
+  "test": {
+    "path": "src2"
   }
 }
