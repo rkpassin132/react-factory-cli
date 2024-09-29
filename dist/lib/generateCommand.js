@@ -27,11 +27,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateComponent = generateComponent;
+exports.generateContext = generateContext;
+exports.generateHook = generateHook;
+exports.generateService = generateService;
+exports.generateInterface = generateInterface;
 var path = __importStar(require("path"));
-var fileHelpers_1 = require("../../utils/fileHelpers");
-var component_template_1 = require("../../templates/component.template");
-var rfcConfig_1 = __importDefault(require("../../utils/rfcConfig"));
-var stringCases_1 = require("../../utils/stringCases");
+var fileHelpers_1 = require("../helper/fileHelpers");
+var component_template_1 = require("../templates/component.template");
+var rfcConfig_1 = __importDefault(require("../helper/rfcConfig"));
+var stringCases_1 = require("../helper/stringCases");
+var context_template_1 = require("../templates/context.template");
+var hook_template_1 = require("../templates/hook.template");
 // Load configuration
 var config = (0, rfcConfig_1.default)();
 function generateComponent(name, options, componentType) {
@@ -73,4 +79,40 @@ function generateComponent(name, options, componentType) {
     // Write the component file
     (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".tsx")), componentTemplate);
     (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".scss")), (0, component_template_1.styleTemplate)(fileName));
+}
+function generateContext(name) {
+    var _a;
+    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
+    var contextDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.context) === null || _a === void 0 ? void 0 : _a.path) || "src/context");
+    if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
+        contextDir += '/' + pathDir;
+    (0, fileHelpers_1.createDirectoryIfNotExists)(contextDir);
+    (0, fileHelpers_1.writeFile)(path.join(contextDir, "".concat(fileName, "Context.tsx")), (0, context_template_1.contextTemplate)(fileName));
+}
+function generateHook(name) {
+    var _a;
+    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
+    var contextDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.hook) === null || _a === void 0 ? void 0 : _a.path) || "src/hooks");
+    if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
+        contextDir += '/' + pathDir;
+    (0, fileHelpers_1.createDirectoryIfNotExists)(contextDir);
+    (0, fileHelpers_1.writeFile)(path.join(contextDir, "use".concat(fileName, ".ts")), (0, hook_template_1.hookTemplate)(fileName));
+}
+function generateService(name) {
+    var _a;
+    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
+    var serviceDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.service) === null || _a === void 0 ? void 0 : _a.path) || "src/services");
+    if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
+        serviceDir += '/' + pathDir;
+    (0, fileHelpers_1.createDirectoryIfNotExists)(serviceDir);
+    (0, fileHelpers_1.writeFile)(path.join(serviceDir, "".concat(fileName, "Service.ts")), "/* ".concat(fileName, " service file */"));
+}
+function generateInterface(name) {
+    var _a;
+    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
+    var contextDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.hook) === null || _a === void 0 ? void 0 : _a.path) || "src/hooks");
+    if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
+        contextDir += '/' + pathDir;
+    (0, fileHelpers_1.createDirectoryIfNotExists)(contextDir);
+    (0, fileHelpers_1.writeFile)(path.join(contextDir, "use".concat(fileName, ".ts")), (0, hook_template_1.hookTemplate)(fileName));
 }

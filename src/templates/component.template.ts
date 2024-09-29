@@ -1,4 +1,4 @@
-import { toCamelCase } from "../utils/stringCases";
+import { toCamelCase } from "../helper/stringCases";
 
 function getStyle(name: string): string {
   let importStyle = `import './${name}.scss'; // Import the style file`;

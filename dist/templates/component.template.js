@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.styleTemplate = styleTemplate;
 exports.functionalComponentTemplate = functionalComponentTemplate;
 exports.classComponentTemplate = classComponentTemplate;
-var stringCases_1 = require("../utils/stringCases");
+var stringCases_1 = require("../helper/stringCases");
 function getStyle(name) {
     var importStyle = "import './".concat(name, ".scss'; // Import the style file");
     return importStyle;

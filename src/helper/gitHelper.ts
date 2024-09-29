@@ -24,6 +24,7 @@ export const gitClone = async (branch: string, targetDir: string) => {
         logger.info("Application created");
 
         logger.info("Installing packages using `npm install`");
+        await runCommand(`cd ${tempDir}`);
         await runCommand(`npm install`);
         logger.success("Ready to use");
     } catch (err) {

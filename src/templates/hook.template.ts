@@ -1,4 +1,4 @@
-import { toCamelCase } from "../utils/stringCases";
+import { toCamelCase } from "../helper/stringCases";
 
 export function hookTemplate(name: string): string {
   let name2 = toCamelCase(name);
