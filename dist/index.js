@@ -21,6 +21,7 @@ program
     .option("-f, --functional", "Generate a functional component", false)
     .option("-c, --class", "Generate a class-based component", false)
     .option("-p, --path", "Generate a component with on diffrent location", false)
+    .option("-t, --test", "Generate a component with on test file", false)
     .action(function (name, options) { return (0, generateCommand_1.generateComponent)(name, options); });
 program
     .command("generate:page <name>")
@@ -29,6 +30,8 @@ program
     .option("-f, --functional", "Generate a functional component", false)
     .option("-c, --class", "Generate a class-based component", false)
     .option("-r, --routing", "Generate a component with routing", false)
+    .option("-t, --test", "Generate a component with on test file", false)
+    .option("-seo, --seoTag", "Generate a component with on seo meta tags", false)
     .action(function (name, options) { return (0, generateCommand_1.generateComponent)(name, options, "page"); });
 program
     .command("generate:service <name>")
@@ -50,4 +53,9 @@ program
     .alias("gi")
     .description("Generate a new interface")
     .action(function (name, options) { return (0, generateCommand_1.generateInterface)(name); });
+program
+    .command("generate:test <name>")
+    .alias("gt")
+    .description("Generate a new test file")
+    .action(function (name, options) { return (0, generateCommand_1.generateTest)(name); });
 program.parse(process.argv);

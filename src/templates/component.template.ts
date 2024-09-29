@@ -13,10 +13,11 @@ export function styleTemplate(name: string) {
 }
 
 // Functional Component Template
-export function functionalComponentTemplate(name: string): string {
+export function functionalComponentTemplate(name: string, withSeoTag:boolean=false): string {
   let name2 = toCamelCase(name);
   return `
-import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
+import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';${
+  withSeoTag ? `\nimport { Helmet } from 'react-helmet-async';` : ''}
 ${getStyle(name)}
 
 const ${name}: React.FC = () => {
@@ -34,9 +35,23 @@ const ${name}: React.FC = () => {
   useLayoutEffect(() => {
     // This runs synchronously after DOM mutations
   });
+  ${withSeoTag ?
+  `\n const renderSeoTags = () => {
+    return (
+      <Helmet>
+        <title>${name} Page</title>
+        <meta property="og:title" content="" />
+        <link rel="canonical" href="/${name2}" />
+      </Helmet>
+    );
+  };`
+  : ''}
 
   return (
-    <div className="${name2}-container">${name} Component</div>
+    <>${
+      withSeoTag ? '\n      {renderSeoTags()}' : ''}
+      <div className="${name2}-container">${name} Component</div>
+    </>
   );
 };
 
@@ -45,14 +60,15 @@ export default ${name};
 }
 
 // Class Component Template
-export function classComponentTemplate(name: string): string {
+export function classComponentTemplate(name: string, withSeoTag:boolean=false): string {
   let name2 = toCamelCase(name);
   return `
-import React, { Component } from 'react';
+import React, { Component } from 'react';${
+  withSeoTag ? `\nimport { Helmet } from 'react-helmet-async';` : ''}
 ${getStyle(name)}
 
 class ${name} extends Component {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     // Initialize state
     this.state = {
@@ -63,7 +79,7 @@ class ${name} extends Component {
     // Called immediately after the component is mounted.
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: any, prevState: any) {
     // Called after the component updates due to state or prop changes.
   }
 
@@ -71,18 +87,73 @@ class ${name} extends Component {
     // Called immediately before the component is unmounted and destroyed.
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: any, nextState: any) {
     // Determines if the component should update or not.
-    // return true | false;
+    return true;
   }
+  ${withSeoTag ?
+    `\nrenderSeoTags() {
+      return (
+        <Helmet>
+          <title>${name} Page</title>
+          <meta property="og:title" content="" />
+          <link rel="canonical" href="/${name2}" />
+        </Helmet>
+      );
+    };`
+    : ''}
 
   render() {
     return (
-      <div className="${name2}-container">${name} Component</div>
+      <>${
+        withSeoTag ? '\n{this.renderSeoTags()}' : ''}
+        <div className="${name2}-container">${name} Component</div>
+      </>
     );
   }
 }
 
 export default ${name};
+  `;
+}
+
+// test file Template
+export function testTemplate(name: string): string {
+  let name2 = toCamelCase(name);
+  return `
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+
+describe('describe ${name2}', () => {
+  test('test ${name2}', () => {
+  });
+});
+  `;
+}
+
+export function componentTestTemplate(name: string): string {
+  return `
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
+import ${name} from './${name}'; // Adjust the import path as needed
+
+describe('${name}Page Component', () => {
+  const title = '${name} Page';
+  const description = '';
+
+  // Utility to render the component with HelmetProvider
+  const renderWithHelmetProvider = (ui: React.ReactElement) => {
+    return render(<HelmetProvider>{ui}</HelmetProvider>);
+  };
+
+  test('renders ${name}Page component correctly', () => {
+    renderWithHelmetProvider(<${name} />);
+
+    // Check if the title and description are rendered in the component
+    expect(screen.getByText(title)).toBeInTheDocument();
+    expect(screen.getByText(description)).toBeInTheDocument();
+  });
+});
   `;
 }
