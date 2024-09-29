@@ -99,7 +99,9 @@ var gitClone = function (branch, targetDir) { return __awaiter(void 0, void 0, v
                 _i++;
                 return [3 /*break*/, 3];
             case 6:
-                fs.rmSync(tempDir, { recursive: true, force: true });
+                setTimeout(function () {
+                    fs.rmSync(tempDir, { recursive: true, force: true });
+                }, 100);
                 logger_1.default.info("Application created");
                 logger_1.default.info("Installing packages using `npm install`");
                 return [4 /*yield*/, (0, commands_1.runCommand)("cd ".concat(tempDir))];
