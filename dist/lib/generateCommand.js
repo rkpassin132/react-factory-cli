@@ -42,15 +42,23 @@ var hook_template_1 = require("../templates/hook.template");
 var interface_template_1 = require("../templates/interface.template");
 // Load configuration
 var config = (0, rfcConfig_1.default)();
+function generateFileFromTemplate(templatePath, destinationPath, fileName, replacements) {
+    var content = (0, fileHelpers_1.readFile)(templatePath);
+    // Replace placeholders in the template with actual values
+    for (var _i = 0, _a = Object.entries(replacements); _i < _a.length; _i++) {
+        var _b = _a[_i], key = _b[0], value = _b[1];
+        content = content.replace(new RegExp("{{".concat(key, "}}"), "g"), value);
+    }
+    // Write the generated content to the destination
+    (0, fileHelpers_1.writeFile)(path.join(destinationPath, "".concat(fileName)), content);
+}
 function generateComponent(name, options, componentType) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
     if (componentType === void 0) { componentType = "component"; }
     var _m = (0, stringCases_1.fileNameAndPath)(name), fileName = _m.fileName, pathDir = _m.pathDir;
-    var componentPath = "";
-    if (options["path"]) {
-        componentPath = options["path"];
-    }
-    else {
+    // Determine base component directory
+    var componentPath = (options === null || options === void 0 ? void 0 : options["path"]) || null;
+    if (!componentPath) {
         componentPath =
             componentType == "page"
                 ? ((_a = config === null || config === void 0 ? void 0 : config.page) === null || _a === void 0 ? void 0 : _a.path) || "src/pages"
@@ -58,21 +66,30 @@ function generateComponent(name, options, componentType) {
     }
     var componentDir = path.join(process.cwd(), componentPath, fileName);
     if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
-        componentDir += '/' + pathDir;
+        componentDir += "/" + pathDir;
+    // Create directory if not exists
     (0, fileHelpers_1.createDirectoryIfNotExists)(componentDir);
+    // Check if user provided a custom template
+    var userTemplatePath = componentType === "page" ? ((_c = config === null || config === void 0 ? void 0 : config.page) === null || _c === void 0 ? void 0 : _c.templatePath) || null : ((_d = config === null || config === void 0 ? void 0 : config.component) === null || _d === void 0 ? void 0 : _d.templatePath) || null;
+    if (userTemplatePath) {
+        // If user provides template, just generate from it and exit
+        generateFileFromTemplate(userTemplatePath, componentDir, "".concat(fileName, ".tsx"), { name: fileName });
+        (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".scss")), (0, component_template_1.styleTemplate)(fileName));
+        return;
+    }
+    // ------------------- Normal logic -------------------
     var componentTemplate = "";
     // Validation for mutually exclusive options
-    var hasFunctional = !((_c = config === null || config === void 0 ? void 0 : config.component) === null || _c === void 0 ? void 0 : _c.type) || (config === null || config === void 0 ? void 0 : config.component.type) !== "class" || !!options["functional"];
-    var hasClass = ((_d = config === null || config === void 0 ? void 0 : config.component) === null || _d === void 0 ? void 0 : _d.type) === "class" || !!options["class"];
-    var withTestFile = !!((_e = config === null || config === void 0 ? void 0 : config.component) === null || _e === void 0 ? void 0 : _e.withTest) || !!options['test'];
+    var hasFunctional = !((_e = config === null || config === void 0 ? void 0 : config.component) === null || _e === void 0 ? void 0 : _e.type) || (config === null || config === void 0 ? void 0 : config.component.type) !== "class" || !!options["functional"];
+    var hasClass = ((_f = config === null || config === void 0 ? void 0 : config.component) === null || _f === void 0 ? void 0 : _f.type) === "class" || !!options["class"];
+    var withTestFile = !!((_g = config === null || config === void 0 ? void 0 : config.component) === null || _g === void 0 ? void 0 : _g.withTest) || !!options['test'];
     var withSeoTag = false;
     // Handle case when componentType is 'page'
     if (componentType === 'page') {
-        hasFunctional = !((_f = config === null || config === void 0 ? void 0 : config.page) === null || _f === void 0 ? void 0 : _f.type) || (config === null || config === void 0 ? void 0 : config.page.type) !== "class" || !!options["functional"];
-        hasClass = ((_g = config === null || config === void 0 ? void 0 : config.page) === null || _g === void 0 ? void 0 : _g.type) === "class" || !!options["class"];
-        withTestFile = !!((_h = config === null || config === void 0 ? void 0 : config.page) === null || _h === void 0 ? void 0 : _h.withTest) || !!options['test'];
-        withSeoTag = !!((_j = config === null || config === void 0 ? void 0 : config.page) === null || _j === void 0 ? void 0 : _j.withSeoTag) || !!options['seoTag']; // Corrected condition for SEO tags
-        console.log((_k = config === null || config === void 0 ? void 0 : config.page) === null || _k === void 0 ? void 0 : _k.withSeoTag, options['seoTag'], !!((_l = config === null || config === void 0 ? void 0 : config.page) === null || _l === void 0 ? void 0 : _l.withSeoTag), !!options['seoTag']);
+        hasFunctional = !((_h = config === null || config === void 0 ? void 0 : config.page) === null || _h === void 0 ? void 0 : _h.type) || (config === null || config === void 0 ? void 0 : config.page.type) !== "class" || !!options["functional"];
+        hasClass = ((_j = config === null || config === void 0 ? void 0 : config.page) === null || _j === void 0 ? void 0 : _j.type) === "class" || !!options["class"];
+        withTestFile = !!((_k = config === null || config === void 0 ? void 0 : config.page) === null || _k === void 0 ? void 0 : _k.withTest) || !!options['test'];
+        withSeoTag = !!((_l = config === null || config === void 0 ? void 0 : config.page) === null || _l === void 0 ? void 0 : _l.withSeoTag) || !!options['seoTag'];
     }
     // Select component template based on class or functional
     if (hasClass) {
@@ -89,47 +106,77 @@ function generateComponent(name, options, componentType) {
     }
 }
 function generateContext(name) {
-    var _a;
-    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
+    var _a, _b;
+    var _c = (0, stringCases_1.fileNameAndPath)(name), fileName = _c.fileName, pathDir = _c.pathDir;
     var contextDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.context) === null || _a === void 0 ? void 0 : _a.path) || "src/context");
     if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
         contextDir += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(contextDir);
-    (0, fileHelpers_1.writeFile)(path.join(contextDir, "".concat(fileName, "Context.tsx")), (0, context_template_1.contextTemplate)(fileName));
+    // Check for user-defined template
+    var userTemplatePath = ((_b = config === null || config === void 0 ? void 0 : config.context) === null || _b === void 0 ? void 0 : _b.templatePath) || null;
+    if (userTemplatePath) {
+        generateFileFromTemplate(userTemplatePath, contextDir, "".concat(fileName, ".context.tsx"), { name: fileName });
+        return;
+    }
+    (0, fileHelpers_1.writeFile)(path.join(contextDir, "".concat(fileName, ".context.tsx")), (0, context_template_1.contextTemplate)(fileName));
 }
 function generateHook(name) {
-    var _a;
-    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
+    var _a, _b;
+    var _c = (0, stringCases_1.fileNameAndPath)(name), fileName = _c.fileName, pathDir = _c.pathDir;
     var contextDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.hook) === null || _a === void 0 ? void 0 : _a.path) || "src/hooks");
     if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
         contextDir += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(contextDir);
+    // Check for user-defined template
+    var userTemplatePath = ((_b = config === null || config === void 0 ? void 0 : config.hook) === null || _b === void 0 ? void 0 : _b.templatePath) || null;
+    if (userTemplatePath) {
+        generateFileFromTemplate(userTemplatePath, contextDir, "use".concat(fileName, ".ts"), { name: fileName });
+        return;
+    }
     (0, fileHelpers_1.writeFile)(path.join(contextDir, "use".concat(fileName, ".ts")), (0, hook_template_1.hookTemplate)(fileName));
 }
 function generateService(name) {
-    var _a;
-    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
+    var _a, _b;
+    var _c = (0, stringCases_1.fileNameAndPath)(name), fileName = _c.fileName, pathDir = _c.pathDir;
     var serviceDir = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.service) === null || _a === void 0 ? void 0 : _a.path) || "src/services");
     if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
         serviceDir += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(serviceDir);
-    (0, fileHelpers_1.writeFile)(path.join(serviceDir, "".concat(fileName, "Service.ts")), "/* ".concat(fileName, " service file */"));
+    // Check for user-defined template
+    var userTemplatePath = ((_b = config === null || config === void 0 ? void 0 : config.service) === null || _b === void 0 ? void 0 : _b.templatePath) || null;
+    if (userTemplatePath) {
+        generateFileFromTemplate(userTemplatePath, serviceDir, "".concat(fileName, ".service.ts"), { name: fileName });
+        return;
+    }
+    (0, fileHelpers_1.writeFile)(path.join(serviceDir, "".concat(fileName, ".service.ts")), "/* ".concat(fileName, " service file */"));
 }
 function generateInterface(name) {
-    var _a;
-    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
+    var _a, _b;
+    var _c = (0, stringCases_1.fileNameAndPath)(name), fileName = _c.fileName, pathDir = _c.pathDir;
     var folderPath = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.interface) === null || _a === void 0 ? void 0 : _a.path) || "src/utils/interfaces");
     if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
         folderPath += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(folderPath);
+    // Check for user-defined template
+    var userTemplatePath = ((_b = config === null || config === void 0 ? void 0 : config.interface) === null || _b === void 0 ? void 0 : _b.templatePath) || null;
+    if (userTemplatePath) {
+        generateFileFromTemplate(userTemplatePath, folderPath, "".concat(fileName, ".interface.ts"), { name: fileName });
+        return;
+    }
     (0, fileHelpers_1.writeFile)(path.join(folderPath, "".concat(fileName, ".interface.ts")), (0, interface_template_1.interfaceTemplate)(fileName));
 }
 function generateTest(name) {
-    var _a;
-    var _b = (0, stringCases_1.fileNameAndPath)(name), fileName = _b.fileName, pathDir = _b.pathDir;
+    var _a, _b;
+    var _c = (0, stringCases_1.fileNameAndPath)(name), fileName = _c.fileName, pathDir = _c.pathDir;
     var folderPath = path.join(process.cwd(), ((_a = config === null || config === void 0 ? void 0 : config.test) === null || _a === void 0 ? void 0 : _a.path) || "");
     if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
         folderPath += '/' + pathDir;
     (0, fileHelpers_1.createDirectoryIfNotExists)(folderPath);
+    // Check for user-defined template
+    var userTemplatePath = ((_b = config === null || config === void 0 ? void 0 : config.test) === null || _b === void 0 ? void 0 : _b.templatePath) || null;
+    if (userTemplatePath) {
+        generateFileFromTemplate(userTemplatePath, folderPath, "".concat(fileName, ".test.tsx"), { name: fileName });
+        return;
+    }
     (0, fileHelpers_1.writeFile)(path.join(folderPath, "".concat(fileName, ".test.tsx")), (0, component_template_1.testTemplate)(fileName));
 }
