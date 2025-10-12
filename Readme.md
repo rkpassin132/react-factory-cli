@@ -25,6 +25,7 @@ React Factory CLI is evolving, and with every release, it's becoming more than j
   - [Config](#rfc-config)
   - [Available Commands](#available-commands)
   - [Command Options](#command-options)
+  - [Custom Templates](#custom-templates)
   - [Examples](#examples)
 - [Roadmap](#roadmap)
 
@@ -66,26 +67,33 @@ react-factory-cli <operation> <name> [options...]
 {
   "component": {
     "path": "src/components",
-    "type": "functional"
+    "type": "functional",
+    "templatePath": "templates/component-template.js"
   },
   "page": {
-    "path": "src/components",
-    "type": "functional"
+    "path": "src/pages",
+    "type": "functional",
+    "templatePath": "templates/page-template.js"
   },
   "service": {
-    "path": "src/services"
+    "path": "src/services",
+    "templatePath": "templates/service-template.js"
   },
   "context": {
-    "path": "src/context"
+    "path": "src/context",
+    "templatePath": "templates/context-template.js"
   },
   "hook": {
-    "path": "src/hooks"
+    "path": "src/hooks",
+    "templatePath": "templates/hook-template.js"
   },
   "interface": {
-    "path": "src/utils/interfaces"
+    "path": "src/utils/interfaces",
+    "templatePath": "templates/interface-template.ts"
   },
   "test": {
-    "path": "src" // if existing project set root folder and define test file path while creating using command `rfc gt components/User/user` or `rfc gt test/user`
+    "path": "src/tests",
+    "templatePath": "templates/test-template.js"
   }
 }
 ```
@@ -113,6 +121,31 @@ react-factory-cli <operation> <name> [options...]
 | `generate:component`, `gc`, `generate:page`, `gp` | `-p, --path <location>` | Generate a component or page component in a different location          |
 | `generate:component`, `gc`, `generate:page`, `gp` | `-t, --test`            | Generate a component or page component with test files                  |
 | `generate:page`, `gp`                             | `-seo, --seoTag`        | Generate a page component include seo tags                              |
+
+### Custom Template
+The Custom Template feature allows you to define your own templates for components, pages, services, contexts, hooks, interfaces, and test files. This is useful when you want to standardize the structure of your generated files or include specific boilerplate code that fits your project requirements.
+
+#### Why Use Custom Templates?
+- Consistency: Ensure all generated files follow the same structure and coding standards.
+- Customization: Add your own boilerplate code, imports, or specific logic to the generated files.
+- Flexibility: Tailor the templates to match your project’s architecture and requirements.
+
+#### Example Custom Template
+```ts
+import React from "react";
+
+interface {{name}}Props {}
+
+const {{name}}: React.FC<{{name}}Props> = () => {
+  return (
+    <div className="{{name}}">
+      <h1>{{name}} Component</h1>
+    </div>
+  );
+};
+
+export default {{name}};
+```
 
 ### Examples
 

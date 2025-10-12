@@ -5,6 +5,7 @@ import fs from "fs-extra";
 export interface Config {
   component: {
     path: string;
+    templatePath?: string;
     type: string;
     withTest: boolean;
   };
@@ -13,24 +14,31 @@ export interface Config {
     type: string;
     withTest: boolean;
     withSeoTag: boolean;
+    templatePath?: string;
   };
   service: {
     path: string;
+    templatePath?: string;
   };
   route: {
     path: string;
+    templatePath?: string;
   };
   context: {
     path: string;
+    templatePath?: string;
   };
   hook: {
     path: string;
+    templatePath?: string;
   };
   interface: {
     path: string;
+    templatePath?: string;
   }
   test: {
     path: string;
+    templatePath?: string;
   }
 }
 
