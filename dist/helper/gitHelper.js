@@ -74,7 +74,7 @@ var gitClone = function (branch, targetDir) { return __awaiter(void 0, void 0, v
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 9, , 10]);
+                _a.trys.push([0, 7, , 8]);
                 // Clone the develop branch to a temporary directory
                 return [4 /*yield*/, (0, commands_1.runCommand)("git clone --branch ".concat(branch, " ").concat(repoUrl, " ").concat(tempDir))];
             case 1:
@@ -89,6 +89,8 @@ var gitClone = function (branch, targetDir) { return __awaiter(void 0, void 0, v
             case 3:
                 if (!(_i < files_1.length)) return [3 /*break*/, 6];
                 file = files_1[_i];
+                if (file === '.git')
+                    return [3 /*break*/, 5];
                 src = path_1.default.join(tempDir, file);
                 dest = path_1.default.join(targetDir, file);
                 return [4 /*yield*/, fs.renameSync(src, dest)];
@@ -99,25 +101,31 @@ var gitClone = function (branch, targetDir) { return __awaiter(void 0, void 0, v
                 _i++;
                 return [3 /*break*/, 3];
             case 6:
-                setTimeout(function () {
-                    fs.rmSync(tempDir, { recursive: true, force: true });
-                }, 100);
-                logger_1.default.info("Application created");
-                logger_1.default.info("Installing packages using `npm install`");
-                return [4 /*yield*/, (0, commands_1.runCommand)("cd ".concat(tempDir))];
+                fs.rmSync(tempDir, { recursive: true, force: true });
+                setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                logger_1.default.info("Application created");
+                                logger_1.default.info("Installing packages using `npm install`");
+                                return [4 /*yield*/, (0, commands_1.runCommand)("cd ".concat(targetDir))];
+                            case 1:
+                                _a.sent();
+                                return [4 /*yield*/, (0, commands_1.runCommand)("npm install")];
+                            case 2:
+                                _a.sent();
+                                logger_1.default.success("Ready to use");
+                                return [2 /*return*/];
+                        }
+                    });
+                }); }, 600);
+                return [3 /*break*/, 8];
             case 7:
-                _a.sent();
-                return [4 /*yield*/, (0, commands_1.runCommand)("npm install")];
-            case 8:
-                _a.sent();
-                logger_1.default.success("Ready to use");
-                return [3 /*break*/, 10];
-            case 9:
                 err_1 = _a.sent();
                 console.error('Error:', err_1);
                 logger_1.default.error("Fail to setup repo");
-                return [3 /*break*/, 10];
-            case 10: return [2 /*return*/];
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
         }
     });
 }); };
