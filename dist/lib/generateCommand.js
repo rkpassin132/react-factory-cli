@@ -53,9 +53,9 @@ function generateFileFromTemplate(templatePath, destinationPath, fileName, repla
     (0, fileHelpers_1.writeFile)(path.join(destinationPath, "".concat(fileName)), content);
 }
 function generateComponent(name, options, componentType) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
     if (componentType === void 0) { componentType = "component"; }
-    var _m = (0, stringCases_1.fileNameAndPath)(name), fileName = _m.fileName, pathDir = _m.pathDir;
+    var _w = (0, stringCases_1.fileNameAndPath)(name), fileName = _w.fileName, pathDir = _w.pathDir;
     // Determine base component directory
     var componentPath = (options === null || options === void 0 ? void 0 : options["path"]) || null;
     if (!componentPath) {
@@ -64,32 +64,45 @@ function generateComponent(name, options, componentType) {
                 ? ((_a = config === null || config === void 0 ? void 0 : config.page) === null || _a === void 0 ? void 0 : _a.path) || "src/pages"
                 : ((_b = config === null || config === void 0 ? void 0 : config.component) === null || _b === void 0 ? void 0 : _b.path) || "src/components";
     }
-    var componentDir = path.join(process.cwd(), componentPath, fileName);
+    // Handle folder structure configuration
+    var componentDir = path.join(process.cwd(), componentPath);
+    if ((_c = config === null || config === void 0 ? void 0 : config.component) === null || _c === void 0 ? void 0 : _c.folderStructure) {
+        componentDir = path.join(componentDir, fileName);
+    }
     if (pathDir === null || pathDir === void 0 ? void 0 : pathDir.length)
-        componentDir += "/" + pathDir;
+        componentDir = path.join(componentDir, pathDir);
     // Create directory if not exists
     (0, fileHelpers_1.createDirectoryIfNotExists)(componentDir);
     // Check if user provided a custom template
-    var userTemplatePath = componentType === "page" ? ((_c = config === null || config === void 0 ? void 0 : config.page) === null || _c === void 0 ? void 0 : _c.templatePath) || null : ((_d = config === null || config === void 0 ? void 0 : config.component) === null || _d === void 0 ? void 0 : _d.templatePath) || null;
+    var userTemplatePath = componentType === "page" ? ((_d = config === null || config === void 0 ? void 0 : config.page) === null || _d === void 0 ? void 0 : _d.templatePath) || null : ((_e = config === null || config === void 0 ? void 0 : config.component) === null || _e === void 0 ? void 0 : _e.templatePath) || null;
     if (userTemplatePath) {
         // If user provides template, just generate from it and exit
         generateFileFromTemplate(userTemplatePath, componentDir, "".concat(fileName, ".tsx"), { name: fileName });
-        (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".scss")), (0, component_template_1.styleTemplate)(fileName));
+        // Handle CSS file generation
+        var widthCss = componentType === "page" ? (_f = config === null || config === void 0 ? void 0 : config.page) === null || _f === void 0 ? void 0 : _f.withCss : (_g = config === null || config === void 0 ? void 0 : config.component) === null || _g === void 0 ? void 0 : _g.withCss;
+        if (widthCss) {
+            var cssFileType_1 = componentType === "page" ? ((_h = config === null || config === void 0 ? void 0 : config.page) === null || _h === void 0 ? void 0 : _h.cssFileType) || "css" : ((_j = config === null || config === void 0 ? void 0 : config.component) === null || _j === void 0 ? void 0 : _j.cssFileType) || "css";
+            (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".").concat(cssFileType_1)), (0, component_template_1.styleTemplate)(fileName));
+        }
         return;
     }
     // ------------------- Normal logic -------------------
     var componentTemplate = "";
     // Validation for mutually exclusive options
-    var hasFunctional = !((_e = config === null || config === void 0 ? void 0 : config.component) === null || _e === void 0 ? void 0 : _e.type) || (config === null || config === void 0 ? void 0 : config.component.type) !== "class" || !!options["functional"];
-    var hasClass = ((_f = config === null || config === void 0 ? void 0 : config.component) === null || _f === void 0 ? void 0 : _f.type) === "class" || !!options["class"];
-    var withTestFile = !!((_g = config === null || config === void 0 ? void 0 : config.component) === null || _g === void 0 ? void 0 : _g.withTest) || !!options['test'];
+    var hasFunctional = !((_k = config === null || config === void 0 ? void 0 : config.component) === null || _k === void 0 ? void 0 : _k.type) || (config === null || config === void 0 ? void 0 : config.component.type) !== "class" || !!options["functional"];
+    var hasClass = ((_l = config === null || config === void 0 ? void 0 : config.component) === null || _l === void 0 ? void 0 : _l.type) === "class" || !!options["class"];
+    var withTestFile = !!((_m = config === null || config === void 0 ? void 0 : config.component) === null || _m === void 0 ? void 0 : _m.withTest) || !!options['test'];
+    var withCss = !!((_o = config === null || config === void 0 ? void 0 : config.component) === null || _o === void 0 ? void 0 : _o.withCss);
+    var cssFileType = ((_p = config === null || config === void 0 ? void 0 : config.component) === null || _p === void 0 ? void 0 : _p.cssFileType) || "css";
     var withSeoTag = false;
     // Handle case when componentType is 'page'
     if (componentType === 'page') {
-        hasFunctional = !((_h = config === null || config === void 0 ? void 0 : config.page) === null || _h === void 0 ? void 0 : _h.type) || (config === null || config === void 0 ? void 0 : config.page.type) !== "class" || !!options["functional"];
-        hasClass = ((_j = config === null || config === void 0 ? void 0 : config.page) === null || _j === void 0 ? void 0 : _j.type) === "class" || !!options["class"];
-        withTestFile = !!((_k = config === null || config === void 0 ? void 0 : config.page) === null || _k === void 0 ? void 0 : _k.withTest) || !!options['test'];
-        withSeoTag = !!((_l = config === null || config === void 0 ? void 0 : config.page) === null || _l === void 0 ? void 0 : _l.withSeoTag) || !!options['seoTag'];
+        hasFunctional = !((_q = config === null || config === void 0 ? void 0 : config.page) === null || _q === void 0 ? void 0 : _q.type) || (config === null || config === void 0 ? void 0 : config.page.type) !== "class" || !!options["functional"];
+        hasClass = ((_r = config === null || config === void 0 ? void 0 : config.page) === null || _r === void 0 ? void 0 : _r.type) === "class" || !!options["class"];
+        withTestFile = !!((_s = config === null || config === void 0 ? void 0 : config.page) === null || _s === void 0 ? void 0 : _s.withTest) || !!options['test'];
+        withCss = !!((_t = config === null || config === void 0 ? void 0 : config.page) === null || _t === void 0 ? void 0 : _t.withCss) || !!options["withCss"];
+        cssFileType = ((_u = config === null || config === void 0 ? void 0 : config.page) === null || _u === void 0 ? void 0 : _u.cssFileType) || "css";
+        withSeoTag = !!((_v = config === null || config === void 0 ? void 0 : config.page) === null || _v === void 0 ? void 0 : _v.withSeoTag) || !!options['seoTag'];
     }
     // Select component template based on class or functional
     if (hasClass) {
@@ -100,7 +113,10 @@ function generateComponent(name, options, componentType) {
     }
     // Write the component file
     (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".tsx")), componentTemplate);
-    (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".scss")), (0, component_template_1.styleTemplate)(fileName));
+    // Write the CSS file if enabled
+    if (withCss) {
+        (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".").concat(cssFileType)), (0, component_template_1.styleTemplate)(fileName));
+    }
     if (withTestFile) {
         (0, fileHelpers_1.writeFile)(path.join(componentDir, "".concat(fileName, ".test.tsx")), (0, component_template_1.componentTestTemplate)(fileName));
     }

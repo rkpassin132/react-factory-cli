@@ -8,6 +8,9 @@ export interface Config {
     templatePath?: string;
     type: string;
     withTest: boolean;
+    folderStructure?: boolean;
+    withCss?: boolean;
+    cssFileType?: string;
   };
   page: {
     path: string;
@@ -15,6 +18,9 @@ export interface Config {
     withTest: boolean;
     withSeoTag: boolean;
     templatePath?: string;
+    folderStructure?: boolean;
+    withCss?: boolean;
+    cssFileType?: string;
   };
   service: {
     path: string;
