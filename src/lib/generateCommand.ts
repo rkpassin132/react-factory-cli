@@ -50,18 +50,30 @@ export function generateComponent(
                 : config?.component?.path || "src/components";
     }
   
-    let componentDir = path.join(process.cwd(), componentPath, fileName);
-    if (pathDir?.length) componentDir += "/" + pathDir;
+    // Handle folder structure configuration
+    let componentDir = path.join(process.cwd(), componentPath);
+    if (config?.component?.folderStructure) {
+      componentDir = path.join(componentDir, fileName);
+    }
+    if (pathDir?.length) componentDir = path.join(componentDir, pathDir);
   
     // Create directory if not exists
     createDirectoryIfNotExists(componentDir);
-  
     // Check if user provided a custom template
     const userTemplatePath = componentType === "page" ? config?.page?.templatePath || null : config?.component?.templatePath || null;
     if (userTemplatePath) {
       // If user provides template, just generate from it and exit
       generateFileFromTemplate(userTemplatePath, componentDir, `${fileName}.tsx`, { name: fileName });
-      writeFile(path.join(componentDir, `${fileName}.scss`), styleTemplate(fileName));
+      
+      // Handle CSS file generation
+      const widthCss = componentType === "page" ? config?.page?.withCss : config?.component?.withCss;
+      if (widthCss) {
+        const cssFileType = componentType === "page" ? config?.page?.cssFileType || "css" : config?.component?.cssFileType || "css";
+        writeFile(
+          path.join(componentDir, `${fileName}.${cssFileType}`),
+          styleTemplate(fileName)
+        );
+      }
       return;
     }
   
@@ -73,6 +85,8 @@ export function generateComponent(
     let hasFunctional = !config?.component?.type || config?.component.type !== "class" || !!options["functional"];
     let hasClass = config?.component?.type === "class" || !!options["class"];
     let withTestFile = !!config?.component?.withTest || !!options['test'];
+    let withCss = !!config?.component?.withCss;
+    let cssFileType = config?.component?.cssFileType || "css";
     let withSeoTag = false;
   
     // Handle case when componentType is 'page'
@@ -80,6 +94,8 @@ export function generateComponent(
       hasFunctional = !config?.page?.type || config?.page.type !== "class" || !!options["functional"];
       hasClass = config?.page?.type === "class" || !!options["class"];
       withTestFile = !!config?.page?.withTest || !!options['test'];
+      withCss = !!config?.page?.withCss || !!options["withCss"];
+      cssFileType = config?.page?.cssFileType || "css";
       withSeoTag = !!config?.page?.withSeoTag || !!options['seoTag'];
     }
   
@@ -92,7 +108,13 @@ export function generateComponent(
   
     // Write the component file
     writeFile(path.join(componentDir, `${fileName}.tsx`), componentTemplate);
-    writeFile(path.join(componentDir, `${fileName}.scss`), styleTemplate(fileName));
+    // Write the CSS file if enabled
+    if (withCss) {
+      writeFile(
+        path.join(componentDir, `${fileName}.${cssFileType}`),
+        styleTemplate(fileName)
+      );
+    }
   
     if (withTestFile) {
       writeFile(path.join(componentDir, `${fileName}.test.tsx`), componentTestTemplate(fileName));

@@ -2,13 +2,19 @@
   "component": {
     "path": "src2/components",
     "type": "functional",
-    "withTest": true
+    "withTest": true,
+    "withCss": true,
+    "cssFileType": "txss" ,
+    "folderStructure": true
   },
   "page": {
     "path": "src2/pages",
     "type": "functional",
     "withSeoTag": true,
-    "withTest": true
+    "withTest": true,
+    "withCss": true,
+    "cssFileType": "scss",
+    "folderStructure": true
   },
   "service": {
     "path": "src2/services"

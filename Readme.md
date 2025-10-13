@@ -58,18 +58,27 @@ react-factory-cli <operation> <name> [options...]
 ```
 
 ### RFC Config
-
+Add this at root level of your project
 ```json
+// rfc-config.json
 {
   "component": {
     "path": "src/components",
-    "type": "functional",
-    "templatePath": "templates/component-template.js"
+    "type": "functional", // 'functional' (default) | 'class'
+    "templatePath": "templates/component-template.js",
+    "withTest": true,
+    "withCss": true,
+    "cssFileType": "scss",
+    "folderStructure": true // create file inside folder
   },
   "page": {
     "path": "src/pages",
-    "type": "functional",
-    "templatePath": "templates/page-template.js"
+    "type": "functional", // 'functional' (default) | 'class'
+    "templatePath": "templates/page-template.js",
+    "withTest": true,
+    "withCss": true,
+    "cssFileType": "scss",
+    "folderStructure": true // create file inside folder
   },
   "service": {
     "path": "src/services",
